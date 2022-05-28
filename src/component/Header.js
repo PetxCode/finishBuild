@@ -3,17 +3,19 @@ import { useSelector, useDispatch } from "react-redux";
 import { NavLink, Link } from "react-router-dom";
 import styled from "styled-components";
 import pix from "./babe.jpeg";
+import { signOut } from "./GlobalState/Global";
 
 const Header = () => {
 	const [auth, authState] = useState(false);
-
+	const user = useSelector((state) => state.user);
+	const dispatch = useDispatch();
 	return (
 		<Container>
 			<Wrapper>
 				<Navigation>
 					<Logo to="/">Logo</Logo>
 
-					{auth ? (
+					{user ? (
 						<div>
 							<Nav to="/mainView">Main View</Nav>
 							<Nav to="/best">Best</Nav>
@@ -23,11 +25,17 @@ const Header = () => {
 					) : null}
 				</Navigation>
 
-				{auth ? (
+				{user ? (
 					<Navigation>
-						<Avatar src={"userData?.avatar"} />
-						{/* <strong style={{ marginRight: "10px" }}>{userData.userName}</strong> */}
-						<Nav1 onClick={() => {}}>Log Out</Nav1>
+						<Avatar src={user?.avatar} />
+						<strong style={{ marginRight: "10px" }}>{user.fullName}</strong>
+						<Nav1
+							onClick={() => {
+								dispatch(signOut());
+							}}
+						>
+							Log Out
+						</Nav1>
 					</Navigation>
 				) : (
 					<Navigation>

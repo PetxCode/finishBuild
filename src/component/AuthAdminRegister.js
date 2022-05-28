@@ -41,10 +41,11 @@ const AuthAdminRegister = () => {
 			<Wrapper>
 				<Card>
 					<Form onSubmit={onSubmit}>
-						<div>
-							Congratulations, your account is now verified, please click okay
-							to continue
-						</div>
+						<Diva>
+							Congratulations, your account is almost verified, PLease provide
+							the OTP code send to you, to finish up and
+							continue❤️❤️❤️🎉🍾🎊🎊🎊🎉🎉🎉🍾
+						</Diva>
 						<Holder>
 							<Label>mainOTP</Label>
 							<Input placeholder="Password" {...register("mainOTP")} />
@@ -60,6 +61,14 @@ const AuthAdminRegister = () => {
 };
 
 export default AuthAdminRegister;
+
+const Diva = styled.div`
+	text-align: center;
+	font-weight: bold;
+	font-size: 20px;
+	color: #004080;
+	text-transform: uppercase;
+`;
 
 const Span = styled(Link)`
 	margin-left: 5px;

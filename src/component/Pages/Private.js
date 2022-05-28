@@ -9,7 +9,7 @@ const Private = ({ children }) => {
 	const token = myUser?.token;
 
 	if (!token) {
-		return <Navigate to="/signup" />;
+		return <Navigate to="/auth" />;
 	}
 	const { isVerify, isAdmin } = decoded(token);
 	return isVerify && isAdmin ? (

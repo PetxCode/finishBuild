@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import * as yup from "yup";
@@ -26,28 +26,27 @@ const AuthRegister = () => {
 	const onSubmit = handleSubmit(async (value) => {
 		console.log(value);
 		const { email, password } = value;
+		navigate("/signup/signin");
+	});
+
+	useEffect(async () => {
 		const mainURL = "http://localhost:2233";
 		const url = `${mainURL}/api/user/${id}/${token}`;
 
-		await axios.get(url).then((res) => {
-			// console.log(res.data.data);
-			// dispatch(createUser(res.data.data));
-		});
-
-		navigate("/signup/signin");
-	});
+		await axios.get(url);
+	}, []);
 
 	return (
 		<Container>
 			<Wrapper>
 				<Card>
 					<Form onSubmit={onSubmit}>
-						<div>
+						<Diva>
 							Congratulations, your account is now verified, please click okay
-							to continue
-						</div>
+							to continue❤️❤️❤️🎉🍾🎊🎊🎊🎉🎉🎉🍾
+						</Diva>
 
-						<Button type="submit">Okay</Button>
+						<Button type="submit">Go to Sign in</Button>
 					</Form>
 				</Card>
 			</Wrapper>
@@ -62,6 +61,14 @@ const Span = styled(Link)`
 	text-decoration: none;
 	color: darkorange;
 	cursor: pointer;
+`;
+
+const Diva = styled.div`
+	text-align: center;
+	font-weight: bold;
+	font-size: 20px;
+	color: #004080;
+	text-transform: uppercase;
 `;
 
 const Div = styled.div`

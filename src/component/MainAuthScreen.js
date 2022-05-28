@@ -11,8 +11,8 @@ const MainAuthScreen = () => {
 	const navigate = useNavigate();
 	const [image, setImage] = useState(pix);
 	const [avatar, setAvatar] = useState("");
-	const [toggle, setToggle] = useState(false);
-	const [toggleAdmin, setToggleAdmin] = useState(true);
+	const [toggle, setToggle] = useState(true);
+	const [toggleAdmin, setToggleAdmin] = useState(false);
 
 	const formSchema = yup.object().shape({
 		userName: yup.string().required("This field cannot be empty"),
@@ -276,9 +276,9 @@ const Div = styled.div`
 `;
 
 const Button = styled.button`
-	width: 80%;
+	width: 82%;
 	margin-top: 5px;
-	height: 40px;
+	height: 50px;
 	font-family: Poppins;
 	font-size: 20px;
 	text-transform: uppercase;
