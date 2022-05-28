@@ -31,8 +31,7 @@ const Header = () => {
 					</Navigation>
 				) : (
 					<Navigation>
-						<Nav to="/signup">Register</Nav>
-						<Nav to="/signupAdmin">Register as Admin</Nav>
+						<Nav to="/auth">Register</Nav>
 						{/* <Nav to="/log">Log Out</Nav> */}
 					</Navigation>
 				)}

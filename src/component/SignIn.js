@@ -56,7 +56,7 @@ const SignIn = () => {
 
 						<Button type="submit">Sign in</Button>
 						<Div>
-							Don't have an Account? <Span to="/signup">Sign up Here</Span>
+							Don't have an Account? <Span to="/auth">Sign up Here</Span>
 						</Div>
 					</Form>
 				</Card>
