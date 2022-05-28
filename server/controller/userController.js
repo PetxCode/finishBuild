@@ -387,6 +387,99 @@ const signinUser = async (req, res) => {
 	}
 };
 
+const forgetPassword = async (req, res) => {
+	try {
+		const { email } = req.body;
+		const user = await userModel.findOne({ email });
+
+		if (user) {
+			if (user.isVerify && user.verifiedToken === "") {
+				const tokenValue = crypto.randomBytes(64).toString("hex");
+
+				const myToken = jwt.sign({ tokenValue }, process.env.SECRET, {
+					expiresIn: process.env.EXPIRES,
+				});
+
+				await userModel.findByIdAndUpdate(
+					user._id,
+					{
+						verifiedToken: myToken,
+					},
+					{ new: true }
+				);
+
+				const mailOptions = {
+					from: "ajmarketplace52@gmail.com",
+					to: email,
+					subject: "Reset Password",
+					html: `
+            <h3>
+            You requested for password reset ${user.fullName}, Please use the <a
+            href="http://localhost:3000/reset/${user._id}/${myToken}"
+            >Link to complete your sign up use your secret key to complete this sign up: </a><h2></h2> 
+            </h3>
+            `,
+				};
+
+				transport.sendMail(mailOptions, (err, info) => {
+					if (err) {
+						console.log(err.message);
+					} else {
+						console.log("Email has been sent to your inbox", info.response);
+					}
+				});
+
+				res.status(201).json({
+					message: "Check your inbox to continue...!",
+				});
+			} else {
+				res.status(201).json({ message: "This can't be carried out" });
+			}
+		} else {
+			res.status(201).json({ message: "user is not in our database" });
+		}
+	} catch (error) {
+		res.status(404).json({
+			message: error.message,
+		});
+	}
+};
+
+const newPassword = async (req, res) => {
+	try {
+		const { password } = req.body;
+		const user = await userModel.findById(req.params.id);
+
+		if (user) {
+			if (user.verifiedToken === req.params.token) {
+				const salt = await bcrypt.genSalt(10);
+				const hashed = await bcrypt.hash(password, salt);
+
+				await userModel.findByIdAndUpdate(
+					user._id,
+					{
+						password: hashed,
+						verifiedToken: "",
+					},
+					{ new: true }
+				);
+
+				res.status(201).json({
+					message: "Your password has been changed, please sign in now!",
+				});
+			} else {
+				res.status(201).json({ message: "wrong token, access deny" });
+			}
+		} else {
+			res.status(201).json({ message: "user is not in our database" });
+		}
+	} catch (error) {
+		res.status(404).json({
+			message: error.message,
+		});
+	}
+};
+
 // const getAllUsers = async(req, res) => {
 //    try {
 
@@ -406,4 +499,6 @@ module.exports = {
 	signinUser,
 	createAdmin,
 	verifyAdmin,
+	forgetPassword,
+	newPassword,
 };

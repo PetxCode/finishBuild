@@ -1,19 +1,19 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { createUser } from "./GlobalState/Global";
 
-const SignIn = () => {
+const ForgetPassword = () => {
+	const { id, token } = useParams();
+
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
+
 	const formSchema = yup.object().shape({
 		email: yup.string().email().required("This field cannot be empty"),
-		password: yup.string().required("This field cannot be empty"),
 	});
 
 	const {
@@ -27,15 +27,13 @@ const SignIn = () => {
 
 	const onSubmit = handleSubmit(async (value) => {
 		console.log(value);
-		const { email, password } = value;
-		const url = "http://localhost:2233/api/user/signin";
+		const { email } = value;
+		const mainURL = "http://localhost:2233";
+		const url = `${mainURL}/api/user/forgetPassword`;
 
-		await axios.post(url, { email, password }).then((res) => {
-			// console.log(res.data.data);
-			dispatch(createUser(res.data.data));
-		});
+		await axios.post(url, { email });
 
-		navigate("/");
+		navigate("/confirm");
 	});
 
 	return (
@@ -43,23 +41,18 @@ const SignIn = () => {
 			<Wrapper>
 				<Card>
 					<Form onSubmit={onSubmit}>
+						<Diva>
+							Congratulations, your account is almost verified, PLease provide
+							the OTP code send to you, to finish up and
+							continue❤️❤️❤️🎉🍾🎊🎊🎊🎉🎉🎉🍾
+						</Diva>
 						<Holder>
-							<Label>Email</Label>
-							<Input placeholder="email" {...register("email")} />
+							<Label>Provide your Email</Label>
+							<Input placeholder="Provide your Email" {...register("email")} />
 							<Error>{errors.message && errors?.message.email}</Error>
 						</Holder>
-						<Holder>
-							<Label>Password</Label>
-							<Input placeholder="Password" {...register("password")} />
-							<Error>{errors.message && errors?.message.password}</Error>
-						</Holder>
 
-						<Button type="submit">Sign in</Button>
-						<Div>
-							Don't have an Account? <Span to="/auth">Sign up Here</Span>
-						</Div>
-
-						<Span1 to="reset">Forgot your Password, click Here to reset</Span1>
+						<Button type="submit">submit</Button>
 					</Form>
 				</Card>
 			</Wrapper>
@@ -67,22 +60,21 @@ const SignIn = () => {
 	);
 };
 
-export default SignIn;
+export default ForgetPassword;
+
+const Diva = styled.div`
+	text-align: center;
+	font-weight: bold;
+	font-size: 20px;
+	color: #004080;
+	text-transform: uppercase;
+`;
 
 const Span = styled(Link)`
 	margin-left: 5px;
 	text-decoration: none;
 	color: darkorange;
 	cursor: pointer;
-`;
-
-const Span1 = styled(Link)`
-	margin-top: 5px;
-	margin-left: 5px;
-	text-decoration: none;
-	color: darkorange;
-	cursor: pointer;
-	font-weight: 500;
 `;
 
 const Div = styled.div`

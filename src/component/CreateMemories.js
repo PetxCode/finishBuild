@@ -1,19 +1,27 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
+
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { useDispatch } from "react-redux";
-import { createUser } from "./GlobalState/Global";
+import pix from "./babe.jpeg";
+import { useSelector } from "react-redux";
 
-const SignIn = () => {
+const CreateRequest = () => {
+	const user = useSelector((state) => state.user);
+	const id = user?._id;
+	console.log(user.token, id);
+
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
+
 	const formSchema = yup.object().shape({
-		email: yup.string().email().required("This field cannot be empty"),
-		password: yup.string().required("This field cannot be empty"),
+		name: yup.string().required("This field cannot be empty"),
+		given: yup.number().required("This field cannot be empty"),
+		balance: yup.number().required("This field cannot be empty"),
+		quantity: yup.number().required("This field cannot be empty"),
+		description: yup.string().required("This field cannot be empty"),
 	});
 
 	const {
@@ -27,13 +35,19 @@ const SignIn = () => {
 
 	const onSubmit = handleSubmit(async (value) => {
 		console.log(value);
-		const { email, password } = value;
-		const url = "http://localhost:2233/api/user/signin";
+		const { name, balance, given, quantity, description } = value;
+		const path = "http://localhost:2233";
+		const url = `${path}/api/item/${id}`;
 
-		await axios.post(url, { email, password }).then((res) => {
-			// console.log(res.data.data);
-			dispatch(createUser(res.data.data));
-		});
+		const config = {
+			authorization: `CodeLab ${user?.token}`,
+		};
+
+		await axios.post(
+			url,
+			{ name, balance, given, quantity, description },
+			config
+		);
 
 		navigate("/");
 	});
@@ -44,22 +58,36 @@ const SignIn = () => {
 				<Card>
 					<Form onSubmit={onSubmit}>
 						<Holder>
-							<Label>Email</Label>
-							<Input placeholder="email" {...register("email")} />
-							<Error>{errors.message && errors?.message.email}</Error>
+							<Label>Name</Label>
+							<Input placeholder="Name" {...register("name")} />
+							<Error>{errors.message && errors?.message.name}</Error>
 						</Holder>
 						<Holder>
-							<Label>Password</Label>
-							<Input placeholder="Password" {...register("password")} />
-							<Error>{errors.message && errors?.message.password}</Error>
+							<Label>Amount Given</Label>
+							<Input placeholder="Amount Given" {...register("given")} />
+							<Error>{errors.message && errors?.message.given}</Error>
+						</Holder>
+						<Holder>
+							<Label>Quantity</Label>
+							<Input placeholder="Quantity" {...register("quantity")} />
+							<Error>{errors.message && errors?.message.quantity}</Error>
+						</Holder>
+						<Holder>
+							<Label>Balance</Label>
+							<Input placeholder="Balance" {...register("balance")} />
+							<Error>{errors.message && errors?.message.balance}</Error>
 						</Holder>
 
-						<Button type="submit">Sign in</Button>
-						<Div>
-							Don't have an Account? <Span to="/auth">Sign up Here</Span>
-						</Div>
+						<Holder>
+							<Label>Description</Label>
+							<InputArea
+								placeholder="Description"
+								{...register("description")}
+							/>
+							<Error>{errors.message && errors?.message.description}</Error>
+						</Holder>
 
-						<Span1 to="reset">Forgot your Password, click Here to reset</Span1>
+						<Button>Create Request</Button>
 					</Form>
 				</Card>
 			</Wrapper>
@@ -67,22 +95,13 @@ const SignIn = () => {
 	);
 };
 
-export default SignIn;
+export default CreateRequest;
 
 const Span = styled(Link)`
 	margin-left: 5px;
 	text-decoration: none;
 	color: darkorange;
 	cursor: pointer;
-`;
-
-const Span1 = styled(Link)`
-	margin-top: 5px;
-	margin-left: 5px;
-	text-decoration: none;
-	color: darkorange;
-	cursor: pointer;
-	font-weight: 500;
 `;
 
 const Div = styled.div`
@@ -114,6 +133,20 @@ const Error = styled.div`
 	color: red;
 	font-weight: 500;
 	font-size: 12px;
+`;
+
+const InputArea = styled.textarea`
+	width: 100%;
+	height: 150px;
+	border-radius: 3px;
+	padding-left: 5px;
+
+	resize: none;
+	::placeholder {
+		font-family: Poppins;
+	}
+	border: 1px solid silver;
+	outline: none;
 `;
 
 const Input = styled.input`
@@ -173,10 +206,10 @@ const ImageHolder = styled.div`
 `;
 
 const Image = styled.img`
-	width: 100px;
-	height: 100px;
+	width: 300px;
+	height: 200px;
 	object-fit: cover;
-	border-radius: 50%;
+	border-radius: 5px;
 	background-color: darkorange;
 	margin-bottom: 20px;
 
@@ -191,8 +224,7 @@ const Card = styled.div`
 	box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
 		rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
 	width: 500px;
-	min-height: 300px;
-	/* height: 100%; */
+	min-height: 650px;
 	border-radius: 5px;
 	display: flex;
 	justify-content: center;

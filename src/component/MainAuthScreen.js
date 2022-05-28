@@ -46,7 +46,7 @@ const MainAuthScreen = () => {
 		const url = `${mainURL}/api/user/registerAdmin`;
 
 		const formData = new FormData();
-		formData.append("userName", userName);
+		formData.append("fullName", userName);
 		formData.append("email", email);
 		formData.append("password", password);
 		formData.append("avatar", avatar);

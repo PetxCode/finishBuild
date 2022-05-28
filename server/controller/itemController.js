@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 
 const createItems = async (req, res) => {
 	try {
+		// if (req.user.isVerify) {
 		const { name, description, given, balance, quantity } = req.body;
 
 		const getUser = await userModel.findById(req.params.id);
@@ -25,6 +26,11 @@ const createItems = async (req, res) => {
 			message: "items has been created",
 			data: createItems,
 		});
+		// } else {
+		// 	res.status(201).json({
+		// 		message: "check your access",
+		// 	});
+		// }
 	} catch (error) {
 		res.status(404).json({
 			message: error.message,

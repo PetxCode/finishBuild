@@ -12,7 +12,7 @@ const verify = require("../utils/verified");
 
 const router = express.Router();
 
-router.route("/:id").post(verify, createItems);
+router.route("/:id").post(createItems);
 router.route("/:id/:item").patch(verify, updateItems);
 router.route("/:id/:item").delete(verify, deleteItems);
 router.route("/all").get(getItems);

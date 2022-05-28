@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { AiTwotoneDelete, AiFillEye } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { allItems, cartItems } from "../GlobalState/Global";
+import { allItems, cartItems } from "./GlobalState/Global";
 
 const MainScreen = () => {
 	const memo = useSelector((state) => state.items);

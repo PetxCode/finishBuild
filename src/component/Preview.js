@@ -3,30 +3,12 @@ import styled from "styled-components";
 import { AiTwotoneDelete, AiFillEye } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { allItems, cartItems } from "../GlobalState/Global";
+import { allItems, removeItems } from "./GlobalState/Global";
 
-const MainScreen = () => {
-	const memo = useSelector((state) => state.items);
+const Preview = () => {
+	const memo = useSelector((state) => state.cart);
 	const user = useSelector((state) => state.user);
 	const dispatch = useDispatch();
-
-	const getItems = async (req, res) => {
-		try {
-			const mainURL = "http://localhost:2233";
-
-			const url = `${mainURL}/api/item/all`;
-			await axios.get(url).then((res) => {
-				console.log(res.data.data);
-				dispatch(allItems(res.data.data));
-			});
-		} catch (err) {
-			console.log(err.message);
-		}
-	};
-
-	useEffect(() => {
-		getItems();
-	}, []);
 
 	return (
 		<Container>
@@ -40,7 +22,7 @@ const MainScreen = () => {
 								<Title1>{props.name}</Title1>
 								<Icon
 									onClick={() => {
-										dispatch(cartItems(props));
+										dispatch(removeItems(props));
 									}}
 								/>
 							</Holder>
@@ -59,9 +41,9 @@ const MainScreen = () => {
 	);
 };
 
-export default MainScreen;
+export default Preview;
 
-const Icon = styled(AiFillEye)`
+const Icon = styled(AiTwotoneDelete)`
 	color: red;
 	font-size: 25px;
 	transition: all 350ms;

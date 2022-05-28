@@ -27,6 +27,20 @@ const itemModel = mongoose.Schema(
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "users",
 		},
+
+		like: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "likes",
+			},
+		],
+
+		rating: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "ratings",
+			},
+		],
 	},
 	{ timestamps: true }
 );

@@ -4,10 +4,12 @@ import { NavLink, Link } from "react-router-dom";
 import styled from "styled-components";
 import pix from "./babe.jpeg";
 import { signOut } from "./GlobalState/Global";
+import { BsCartFill } from "react-icons/bs";
 
 const Header = () => {
 	const [auth, authState] = useState(false);
 	const user = useSelector((state) => state.user);
+	const cart = useSelector((state) => state.cart);
 	const dispatch = useDispatch();
 	return (
 		<Container>
@@ -17,16 +19,19 @@ const Header = () => {
 
 					{user ? (
 						<div>
-							<Nav to="/mainView">Main View</Nav>
-							<Nav to="/best">Best</Nav>
+							<Nav to="/preview">To be Bought</Nav>
 
-							<Nav to="/createMemories">Create</Nav>
+							<Nav to="/request">Create</Nav>
 						</div>
 					) : null}
 				</Navigation>
 
 				{user ? (
 					<Navigation>
+						<Holder>
+							<Icon />
+							<Text>{cart.length}</Text>
+						</Holder>
 						<Avatar src={user?.avatar} />
 						<strong style={{ marginRight: "10px" }}>{user.fullName}</strong>
 						<Nav1
@@ -49,6 +54,30 @@ const Header = () => {
 };
 
 export default Header;
+
+const Icon = styled(BsCartFill)`
+	font-size: 25px;
+`;
+
+const Text = styled.div`
+	background-color: red;
+	color: whitesmoke;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 13px;
+	font-weight: 500;
+`;
+
+const Holder = styled.div`
+	margin: 0 20px;
+	align-items: center;
+	display: flex;
+	height: 100%;
+`;
 
 const Logo = styled(Link)`
 	margin-right: 20px;
