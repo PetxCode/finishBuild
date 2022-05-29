@@ -10,12 +10,13 @@ const createLike = async (req, res) => {
 		newUser = myUser?.user.toString();
 		console.log(newUser);
 
-		if (newUser === req.params.id) {
-			res.status(201).json({ message: "Already Likes", data: user });
+		if (myUser) {
+			return res.status(201).json({ message: "Already Liked" });
 		} else {
 			const getItems = await itemModel.findById(req.params.item);
 			const addLike = new likeModel({
-				count,
+				_id: req.params.id,
+				isLiked: true,
 				user: req.params.id,
 			});
 
@@ -37,6 +38,20 @@ const viewLike = async (req, res) => {
 		const addLike = await itemModel.findById(req.params.item).populate("like");
 
 		res.status(201).json({ message: "add Like", data: addLike });
+	} catch (err) {
+		res.status(404).json({ message: err.message });
+	}
+};
+
+const viewAllLike = async (req, res) => {
+	try {
+		const addLike = await likeModel.find();
+		// .populate("like");
+
+		res.status(201).json({
+			message: "view all Like",
+			data: addLike,
+		});
 	} catch (err) {
 		res.status(404).json({ message: err.message });
 	}
@@ -69,4 +84,5 @@ module.exports = {
 	viewLike,
 	createLike,
 	unLike,
+	viewAllLike,
 };

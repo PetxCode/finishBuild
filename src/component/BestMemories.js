@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { AiTwotoneDelete } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { removeBestMemories } from "./GlobalState";
+import ImageComp from "./Pages/ImageComp";
+import NameComp from "./Pages/NameComp";
 
 const BestMemories = () => {
 	const memo = useSelector((state) => state.bestMemories);
@@ -12,7 +14,7 @@ const BestMemories = () => {
 			<Wrapper>
 				{memo?.map((props) => (
 					<Card key={props._id}>
-						<Image src={props.image} />
+						<ImageComp props={props} />
 
 						<TextHolder>
 							<Holder>
@@ -25,6 +27,7 @@ const BestMemories = () => {
 							</Holder>
 							<Message>{props.message}</Message>
 						</TextHolder>
+						<NameComp props={props} />
 					</Card>
 				))}
 			</Wrapper>

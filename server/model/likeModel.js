@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const likeModel = mongoose.Schema(
 	{
-		count: { type: Number, default: 1 },
+		isLiked: { type: Boolean, default: false },
 		user: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
 		item: { type: mongoose.Schema.Types.ObjectId, ref: "items" },
 	},

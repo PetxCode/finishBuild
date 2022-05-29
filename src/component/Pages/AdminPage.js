@@ -4,6 +4,8 @@ import { AiTwotoneDelete, AiFillEye } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { allItems, cartItems } from "../GlobalState/Global";
+import NameComp from "./NameComp";
+import ImageComp from "./ImageComp";
 
 const MainScreen = () => {
 	const memo = useSelector((state) => state.items);
@@ -33,7 +35,7 @@ const MainScreen = () => {
 			<Wrapper>
 				{memo?.map((props) => (
 					<Card key={props._id}>
-						<Image src={user.avatar} />
+						<ImageComp props={props} />
 
 						<TextHolder>
 							<Holder>
@@ -52,6 +54,7 @@ const MainScreen = () => {
 								<Title>QTY: {props.quantity}</Title>
 							</Holder>
 						</TextHolder>
+						<NameComp props={props} />
 					</Card>
 				))}
 			</Wrapper>

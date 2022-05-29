@@ -13,7 +13,7 @@ const SignUp = () => {
 	const [avatar, setAvatar] = useState("");
 
 	const formSchema = yup.object().shape({
-		userName: yup.string().required("This field cannot be empty"),
+		fullName: yup.string().required("This field cannot be empty"),
 		email: yup.string().email().required("This field cannot be empty"),
 		password: yup.string().required("This field cannot be empty"),
 		confirm: yup
@@ -39,12 +39,12 @@ const SignUp = () => {
 
 	const onSubmit = handleSubmit(async (value) => {
 		console.log(value);
-		const { userName, email, password } = value;
+		const { fullName, email, password } = value;
 		const mainURL = "http://localhost:2233";
 		const url = `${mainURL}/api/user/register`;
 
 		const formData = new FormData();
-		formData.append("userName", userName);
+		formData.append("fullName", fullName);
 		formData.append("email", email);
 		formData.append("password", password);
 		formData.append("avatar", avatar);

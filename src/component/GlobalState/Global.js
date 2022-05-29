@@ -4,6 +4,8 @@ const initialState = {
 	user: null,
 	items: [],
 	cart: [],
+	totalCollected: 0,
+	totalBalance: 0,
 };
 
 const Global = createSlice({
@@ -33,10 +35,58 @@ const Global = createSlice({
 		signOut: (state) => {
 			state.user = null;
 		},
+
+		totalCollect: (state, { payload }) => {
+			const { Money, Balance } = state.cart.reduce(
+				(totalGiven, totalToGive) => {
+					const { given, balance } = totalToGive;
+
+					totalGiven.Balance += balance;
+					totalGiven.Money += given;
+
+					return totalGiven;
+				},
+				{
+					Money: 0,
+					Balance: 0,
+				}
+			);
+			state.totalCollected = Money;
+			state.totalBalance = Balance;
+		},
+
+		totalState: (state, { payload }) => {
+			const { totalCost, totalDays } = state.bookings.reduce(
+				(totalPrice, allBookings) => {
+					const { price, QTY } = allBookings;
+
+					const mainCost = price * QTY;
+
+					totalPrice.totalDays += QTY;
+					totalPrice.totalCost += mainCost;
+
+					return totalPrice;
+				},
+				{
+					totalCost: 0,
+					totalDays: 0,
+				}
+			);
+
+			state.tatalRoomCost = totalCost;
+			state.totalRoomDays = totalDays;
+		},
 	},
 });
 
-export const { createUser, signOut, allItems, cartItems, removeItems } =
-	Global.actions;
+export const {
+	createUser,
+	signOut,
+	allItems,
+	cartItems,
+	removeItems,
+	totalCollect,
+	totalState,
+} = Global.actions;
 
 export default Global.reducer;

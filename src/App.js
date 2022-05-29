@@ -8,7 +8,6 @@ import CreateRequest from "./component/CreateMemories";
 import ForgetPassword from "./component/forgetPassword";
 import Header from "./component/Header";
 import MainAuthScreen from "./component/MainAuthScreen";
-import MainScreen from "./component/MainScreen";
 import AdminPage from "./component/Pages/AdminPage";
 import Private from "./component/Pages/Private";
 import UserPage from "./component/Pages/UserPage";
@@ -37,13 +36,14 @@ const App = () => {
 					<Route path="/confirm" element={<Confirm />} />
 					<Route path="/signupAdmin" element={<SignUpAdmin />} />
 					<Route path="/signup/signin" element={<SignIn />} />
+					<Route path="/signupAdmin/signin" element={<SignIn />} />
 
 					<Route path="/signup" element={<SignUp />} />
 					{user ? <Route path="/user" element={<UserPage />} /> : null}
 					<Route path="/request" element={<CreateRequest />} />
 					<Route path="/auth" element={<MainAuthScreen />} />
 					<Route path="/auth/signin" element={<SignIn />} />
-					<Route path="/mainScreen" element={<MainScreen />} />
+					{/* <Route path="/mainScreen" element={<MainScreen />} /> */}
 					<Route path="/preview" element={<Preview />} />
 
 					<Route

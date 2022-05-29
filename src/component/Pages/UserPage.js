@@ -1,22 +1,26 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { AiTwotoneDelete, AiFillEye } from "react-icons/ai";
+import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { allItems, cartItems } from "../GlobalState/Global";
+import LikeDisplay from "./LikeDisplay";
+import ImageComp from "./ImageComp";
+import NameComp from "./NameComp";
 
 const MainScreen = () => {
 	const memo = useSelector((state) => state.items);
 	const user = useSelector((state) => state.user);
 	const dispatch = useDispatch();
 
-	const getItems = async (req, res) => {
+	const getItems = async () => {
 		try {
 			const mainURL = "http://localhost:2233";
 
 			const url = `${mainURL}/api/item/all`;
 			await axios.get(url).then((res) => {
-				console.log(res.data.data);
+				// console.log(res.data.data);
 				dispatch(allItems(res.data.data));
 			});
 		} catch (err) {
@@ -33,11 +37,17 @@ const MainScreen = () => {
 			<Wrapper>
 				{memo?.map((props) => (
 					<Card key={props._id}>
-						<Image src={user.avatar} />
+						<ImageComp props={props} />
 
 						<TextHolder>
 							<Holder>
 								<Title1>{props.name}</Title1>
+								<Hold>
+									<Divs>
+										total likes: <span>{props.like.length}</span>
+									</Divs>
+									<LikeDisplay props={props} />
+								</Hold>
 							</Holder>
 							<Message>{props.description}</Message>
 							<br />
@@ -47,6 +57,7 @@ const MainScreen = () => {
 								<Title>QTY: {props.quantity}</Title>
 							</Holder>
 						</TextHolder>
+						<NameComp props={props} />
 					</Card>
 				))}
 			</Wrapper>
@@ -55,6 +66,14 @@ const MainScreen = () => {
 };
 
 export default MainScreen;
+
+const Divs = styled.div`
+	font-size: 12px;
+
+	span {
+		font-weight: 700;
+	}
+`;
 
 const Icon = styled(AiFillEye)`
 	color: red;
@@ -67,6 +86,23 @@ const Icon = styled(AiFillEye)`
 		transform: scale(1.01);
 	}
 `;
+const Like1 = styled(MdFavoriteBorder)`
+	color: red;
+	font-size: 20px;
+	transition: all 350ms;
+
+	:hover {
+		transform: scale(1.05);
+		cursor: pointer;
+	}
+`;
+
+const Hold = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+`;
+
 const Holder = styled.div`
 	display: flex;
 	justify-content: space-between;

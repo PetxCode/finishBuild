@@ -15,7 +15,7 @@ const MainAuthScreen = () => {
 	const [toggleAdmin, setToggleAdmin] = useState(false);
 
 	const formSchema = yup.object().shape({
-		userName: yup.string().required("This field cannot be empty"),
+		fullName: yup.string().required("This field cannot be empty"),
 		email: yup.string().email().required("This field cannot be empty"),
 		password: yup.string().required("This field cannot be empty"),
 		confirm: yup
@@ -41,12 +41,12 @@ const MainAuthScreen = () => {
 
 	const onSubmitAdmin = handleSubmit(async (value) => {
 		console.log(value);
-		const { userName, email, password } = value;
+		const { fullName, email, password } = value;
 		const mainURL = "http://localhost:2233";
 		const url = `${mainURL}/api/user/registerAdmin`;
 
 		const formData = new FormData();
-		formData.append("fullName", userName);
+		formData.append("fullName", fullName);
 		formData.append("email", email);
 		formData.append("password", password);
 		formData.append("avatar", avatar);
@@ -77,12 +77,12 @@ const MainAuthScreen = () => {
 
 	const onSubmit = handleSubmit(async (value) => {
 		console.log(value);
-		const { userName, email, password } = value;
+		const { fullName, email, password } = value;
 		const mainURL = "http://localhost:2233";
 		const url = `${mainURL}/api/user/register`;
 
 		const formData = new FormData();
-		formData.append("userName", userName);
+		formData.append("fullName", fullName);
 		formData.append("email", email);
 		formData.append("password", password);
 		formData.append("avatar", avatar);
@@ -105,7 +105,7 @@ const MainAuthScreen = () => {
 		};
 
 		await axios.post(url, formData, config).then((res) => {
-			console.log("Error Data: ", res);
+			console.log("Data: ", res);
 		});
 
 		navigate("/confirm");
@@ -151,8 +151,8 @@ const MainAuthScreen = () => {
 							<Form onSubmit={onSubmit} type="multipart/form-data">
 								<Holder>
 									<Label>User Name</Label>
-									<Input placeholder="userName" {...register("userName")} />
-									<Error>{errors.message && errors?.message.userName}</Error>
+									<Input placeholder="userName" {...register("fullName")} />
+									<Error>{errors.message && errors?.message.fullName}</Error>
 								</Holder>
 								<Holder>
 									<Label>Email</Label>
@@ -198,8 +198,8 @@ const MainAuthScreen = () => {
 							<Form onSubmit={onSubmitAdmin} type="multipart/form-data">
 								<Holder>
 									<Label>User Name</Label>
-									<Input placeholder="userName" {...register("userName")} />
-									<Error>{errors.message && errors?.message.userName}</Error>
+									<Input placeholder="userName" {...register("fullName")} />
+									<Error>{errors.message && errors?.message.fullName}</Error>
 								</Holder>
 								<Holder>
 									<Label>Email</Label>

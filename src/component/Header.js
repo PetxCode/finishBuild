@@ -1,16 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { NavLink, Link } from "react-router-dom";
 import styled from "styled-components";
 import pix from "./babe.jpeg";
-import { signOut } from "./GlobalState/Global";
+import { signOut, totalCollect } from "./GlobalState/Global";
 import { BsCartFill } from "react-icons/bs";
 
 const Header = () => {
 	const [auth, authState] = useState(false);
 	const user = useSelector((state) => state.user);
+	const money = useSelector((state) => state.totalCollected);
 	const cart = useSelector((state) => state.cart);
 	const dispatch = useDispatch();
+
+	useEffect(() => {
+		dispatch(totalCollect());
+	}, [cart]);
+
 	return (
 		<Container>
 			<Wrapper>
@@ -19,9 +25,13 @@ const Header = () => {
 
 					{user ? (
 						<div>
-							<Nav to="/preview">To be Bought</Nav>
-
 							<Nav to="/request">Create</Nav>
+						</div>
+					) : null}
+					{user.isAdmin ? (
+						<div>
+							<Nav to="/user">User</Nav>
+							<Nav to="/preview">To be Bought</Nav>
 						</div>
 					) : null}
 				</Navigation>
